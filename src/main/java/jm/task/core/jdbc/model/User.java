@@ -28,6 +28,11 @@ public class User {
         this.age = age;
     }
 
+    @Override
+    public String toString() {
+        return "Пользователь с id: " + id + ", ФИО: " + name + " " + lastName + ", Возраст: " + age;
+    }
+
     public Long getId() {
         return id;
     }
