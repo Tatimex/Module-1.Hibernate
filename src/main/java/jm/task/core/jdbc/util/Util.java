@@ -1,28 +1,29 @@
 package jm.task.core.jdbc.util;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import jm.task.core.jdbc.model.User;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 
 public class Util {
 
-    private static final String URL = "jdbc:postgresql://localhost:5432/postgres";
-    private static final String USERNAME = "postgres";
-    private static final String PASSWORD = "postgres";
+    private static SessionFactory sessionFactory;
 
+    public static SessionFactory getSessionFactory() {
+        if (sessionFactory == null) {
+            try {
+                Configuration configuration = new Configuration();
+                configuration.configure( "hibernate.cfg.xml" );
+                configuration.addAnnotatedClass(User.class);
 
-    public static Connection getConnection() {
-        Connection connection = null;
-        try {
-//            Class<Driver> driverClass = Driver.class;
-            connection = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-            System.out.println("Connection to  database was successful.");
-        } catch (SQLException ex) {
-            System.out.println("Connection failed...");
-            ex.printStackTrace();
-
+                sessionFactory = configuration.buildSessionFactory();
+                System.out.println( "Session Factory is built" );
+            } catch (Exception e) {
+                System.out.println( "There is an exception in the Session Factory" );
+                e.printStackTrace();
+            }
         }
-        return connection;
+        return sessionFactory;
     }
 }
